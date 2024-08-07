@@ -7,7 +7,10 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Builder
 public class TestVO {
+    private int num;
     private String name;
     private int age;
+    private String addr;
 }

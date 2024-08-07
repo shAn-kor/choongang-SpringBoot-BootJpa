@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>block 문</h3>
+    <!--타임리프에서 특별한 태그를 쓰지 않고 마치 중괄호 처럼 사용하고 싶으면 쓸 수 있는 문구-->
+    <ul>
+        <th:block th:each="vo : ${list}">
+            <li th:text="${vo.toString}"></li>
+        </th:block>
+    </ul>
+
+    <h3>a태그 사용하기</h3>
+    <ul>
+        <li th:each="vo: ${list}">
+<!--            <a href="ex03_result?num=${vo.name}" th:text="${vo.name}"></a>-->
+            <hr>
+            방법1
+            <a th:href="@{ex03_result(name=${vo.name})}" th:text="${vo.name}"></a>
+            <hr>
+            방법2 (pathVariable - URL을 가변매개변수로 쓰는 방법)
+            <a th:href="@{ex03_result2/{name}/{age}(name=${vo.name}, age=${vo.age})}" th:text="${vo.name}"></a>
+        </li>
+    </ul>
+</body>
+</html>

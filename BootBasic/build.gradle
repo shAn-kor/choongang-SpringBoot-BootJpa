@@ -29,6 +29,9 @@ dependencies {
 //    implementation group: 'javax.servlet', name: 'jstl'
 
     // thymeleaf 뷰 사용
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // spring validation
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     implementation 'org.springframework.boot:spring-boot-starter-web' // 스프링 web 모듈

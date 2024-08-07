@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="func(args)">
+    <head>
+        <meta charset="UTF-8">
+        <title>공통템플릿</title>
+    </head>
+    <body>
+    <header>
+        header
+    </header>
+
+    <section>
+        <th:block th:replace="${args}">
+
+        </th:block>
+    </section>
+
+    <footer>
+        footer
+    </footer>
+    </body>
+</th:block>
+</html>
