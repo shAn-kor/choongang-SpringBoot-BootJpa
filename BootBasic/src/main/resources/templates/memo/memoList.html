@@ -1,31 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
 </head>
 <body>
-	
-	<h3>메모 목록</h3>
-	
-		<table>
-			<tr>
-				<td>번호</td>
-				<td>메모</td>
-				<td>연락처</td>
-				<td>공개여부</td>
-			</tr>
-						
-			<tr >
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>공개여부에 따라 if~unless처리</td>
 
-			</tr>
-			
-	</table>
-	
-	<a href="#">메모쓰기</a>
+<h3>메모 목록</h3>
+
+<table>
+	<tr>
+		<td>번호</td>
+		<td>메모</td>
+		<td>연락처</td>
+		<td>공개여부</td>
+	</tr>
+
+	<tr >
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>공개여부에 따라 if~unless처리</td>
+	</tr>
+	<tr th:each="vo : ${list}">
+		<div>
+			<td th:text="${vo.mno}"></td>
+			<td th:unless='${#strings.equals(vo.secret, "y")}' th:text=" ${vo.memo}"></td>
+			<td th:text="${vo.phone}"></td>
+			<td th:text="${vo.secret}"></td>
+		</div>
+	</tr>
+</table>
+
+<a href="memoWrite">메모쓰기</a>
 </body>
 </html>

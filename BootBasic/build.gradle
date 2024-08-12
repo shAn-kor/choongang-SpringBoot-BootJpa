@@ -28,11 +28,20 @@ dependencies {
 //    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '9.0.83'
 //    implementation group: 'javax.servlet', name: 'jstl'
 
-    // thymeleaf 뷰 사용
+    // 유효성 검증
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // spring validation
+    // thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // mybatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+    // mysql connector
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
+
+    // mybatis 로그
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
 
     implementation 'org.springframework.boot:spring-boot-starter-web' // 스프링 web 모듈
     compileOnly 'org.projectlombok:lombok'

@@ -1,0 +1,27 @@
+# db 생성문
+create database spring default charset utf8;
+
+# 계정 생성
+create user spring identified by 'spring';
+
+#권한 부여
+# spring 계정에 spring db의 모든 권한을 준다.
+grant all privileges on spring.* to spring;
+
+#mysql 변경점
+# number -> int
+# varchar2 -> varchar
+# date -> timestamp
+# 시퀀스 없음 - auto_increment (값 1씩 자동 증가)
+# 함수 변경됨
+# 문자열 합치기 || 없어지고 concat(string, string, string...)
+# 서브쿼리에 반드시 테이블 엘리어스 붙임
+# 테이블명칭 대소문자 구분
+
+create table memo (
+            MNO INT PRIMARY KEY AUTO_INCREMENT,
+            MEMO VARCHAR(200) NOT NULL ,
+            PHONE VARCHAR(30),
+            PW VARCHAR(4),
+            SECRET CHAR(1) CHECK (SECRET IN ('y', 'n'))
+        )

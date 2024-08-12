@@ -24,12 +24,12 @@
 	
 	
 	<form action="quizForm" method="post">
-		<input type="text" name="id"  placeholder="아이디는 영문자,숫자 8자 이상입니다" >
-
-		<br>
-		<input type="password" name="pw" placeholder="비밀번호 영문자,숫자,특수문자 조합 8글자 이상" >
-
-		<br>
+		<input type="text" name="id"  th:value="${memberVO.id}" placeholder="아이디는 영문자,숫자 8자 이상입니다"><br>
+		<span th:errors="${memberVO.id}"></span>
+		<hr>
+		<input type="password" name="pw" placeholder="비밀번호 영문자,숫자,특수문자 조합 8글자 이상" th:value="${memberVO.pw}" ><br>
+		<span th:errors="${memberVO.pw}"></span>
+		<hr>
 		<input type="submit" value="로그인">
 		
 	</form>
