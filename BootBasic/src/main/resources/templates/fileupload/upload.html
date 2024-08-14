@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>upload</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<h3>업로드 예제</h3>
+
+<h3>단일 파일 업로드 (반드시 enctype 선언)</h3>
+<form action="uploadOk" method="post" enctype="multipart/form-data">
+    파일:<input type="file" name="file"><br>
+    <input type="submit" value="전송"><br>
+</form>
+
+<hr>
+<h3>멀티플 옵션으로 여러파일</h3>
+<form action="uploadOk2" method="post" enctype="multipart/form-data">
+    파일:<input type="file" name="file" multiple><br>
+    <input type="submit" value="전송"><br>
+</form>
+
+<hr>
+<h3>복수 태그로 여러파일</h3>
+<form action="uploadOk3" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="file" name="file">
+    <input type="file" name="file">
+    <input type="file" name="file">
+    <input type="submit" value="submit">
+</form>
+
+<hr>
+<h3>비동기 업로드 방식</h3>
+<input type="file" name="myFile">
+<button type="button" id="uploadBtn">비동기 업로드</button>
+
+<script>
+    $('#uploadBtn').click(function () {
+        // 1. 파일 데이터 얻기
+        let file = $("input[name=myFile]");
+        let data = file[0].files[0];
+
+        // 2. 폼 데이터에 저장
+        let formData = new FormData();
+        formData.append('file', data);
+
+        $.ajax({
+            type: 'post',
+            url: 'uploadOk4',
+            data: formData,
+            contentType: false, // 'multipart/form-data' 형식 지정
+            processData: false, // 폼을 자동으로 변수=값 형태로 변경되는것을 막는 속성
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error, status) {
+                console.log(error);
+            }
+        })
+    })
+</script>
+
+</body>
+</html>
