@@ -228,9 +228,22 @@ public class MemoCustomRepositoryImpl implements MemoCustomRepository {
         System.out.println(searchType);
         if (searchType.equals("writer")) builder.and(memo.writer.like("%" + searchName + "%"));
         if (searchType.equals("text")) builder.and(memo.text.like("%" + searchName + "%"));
+        if (searchType.equals("mno") && !searchName.isEmpty()) builder.and(memo.mno.like("%" + Long.parseLong(searchName) + "%"));
+        if (searchType.equals("textWriter")) {
+            builder.and(memo.writer.like("%" + searchName + "%"));
+            builder.or(memo.text.like("%" + searchName + "%"));
+        }
 
         List<MemberMemoDTO> list = jpaQueryFactory
-                .select(Projections.constructor(MemberMemoDTO.class, member.id, member.name, member.signDate, memo.mno, memo.writer, memo.text))
+                .select(Projections.constructor(
+                        MemberMemoDTO.class,
+                        member.id,
+                        member.name,
+                        member.signDate,
+                        memo.mno,
+                        memo.writer,
+                        memo.text)
+                )
                 .from(memo)
                 .leftJoin(memo.member, member)
                 .where(builder)
@@ -239,12 +252,14 @@ public class MemoCustomRepositoryImpl implements MemoCustomRepository {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total = jpaQueryFactory.select(memo).from(memo).leftJoin(memo.member, member).where(builder).fetch().size();
+        long total = jpaQueryFactory
+                .select(memo)
+                .from(memo)
+                .leftJoin(memo.member, member)
+                .where(builder)
+                .fetch()
+                .size();
 
         return new PageImpl<>(list, pageable, total);
     }
-
-
-    //querydsl
-
 }
