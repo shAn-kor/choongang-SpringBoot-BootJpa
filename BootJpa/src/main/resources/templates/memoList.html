@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #007bff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .pagination a.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+<select name="searchType">
+    <option value="mno">번호</option>
+    <option value="text">내용</option>
+    <option value="writer">작성자</option>
+    <option value="textWriter">내용 + 작성자</option>
+</select>
+<input type="text" name="searchName">
+<button type="button" onclick="searchList()">검색</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>MNO</th>
+        <th>Writer</th>
+        <th>Text</th>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Sign Date</th>
+    </tr>
+    </thead>
+    <tbody id="tableBody">
+    <!-- Rows will be inserted here by JavaScript -->
+    </tbody>
+</table>
+
+<ul class="pagination" id="pagination">
+    <!-- Pagination buttons wil -->
+
+</ul>
+
+<script>
+    let page = 1;
+    let amount = 10;
+    let searchName = document.querySelector("input[name=searchName]").value;
+    let searchType = document.querySelector("select[name=searchType]").value;
+
+    console.log(searchType);
+
+    let start = 0;
+    let end = 0;
+
+    function getList() {
+        let url = '/getList?page=' + page + '&amount=' + amount + '&searchType=' + searchType + '&searchName=' + searchName;
+        fetch(url)
+            .then(res => {return res.json()})
+            .then(data => {
+                createBody(data.pageData);
+                createPage(data);
+            })
+    }
+
+    function createBody(item) {
+        let tableBody = document.getElementById('tableBody');
+
+        let str = '';
+        item.forEach(function(data) {
+            str += '<tr>';
+            str += '<td>' + data.mno + '</td>';
+            str += '<td>' + data.writer + '</td>';
+            str += '<td>' + data.text + '</td>';
+            str += '<td>' + data.id + '</td>';
+            str += '<td>' + data.name + '</td>';
+            str += '<td>' + data.signDate + '</td>';
+            str += '</tr>';
+        })
+
+        tableBody.innerHTML = str;
+    }
+
+    let pageNation = document.getElementById('pagination');
+    function createPage (item) {
+
+        let pageList = item.pageList;
+        let next = item.next;
+        let prev = item.prev;
+        start = item.start;
+        end = item.end;
+
+
+        let str = '';
+
+        if (prev) {
+            str += '<a href="#" class="prev"><strong> < </strong></a>';
+        }
+
+        pageList.forEach(function(data) {
+            let url = '#';
+            str += '<a href=' + url +  ' class="number">' + data + "</a>";
+        })
+
+        if (next) {
+            str += '<a href="#" class="next"><strong> > </strong></a>';
+        }
+
+        pageNation.innerHTML = str;
+    }
+
+    // 페이지네이션 이벤트 -> 뒤늦게 그려지기 때문에 부모에 걸고 자식에 위임)
+    pageNation.addEventListener('click', function(e) {
+        e.preventDefault();
+        let tagName = e.target.tagName;
+        if (tagName !== 'A') {
+            return;
+        }
+
+        let className = e.target.className;
+        if (className === 'prev') {
+            page = start -1;
+        }
+
+        if (className === 'next') {
+            page = end + 1;
+        }
+
+        if (className === 'number') {
+            page = e.target.innerHTML;
+        }
+
+        getList();
+    });
+
+    function searchList() {
+        page = 1;
+        amount = 10;
+        searchName = document.querySelector("input[name=searchName]").value;
+        searchType = document.querySelector("select[name=searchType]").value;
+        getList();
+    }
+
+    (function() {
+        getList();
+    })();
+</script>
+</body>
+</html>
